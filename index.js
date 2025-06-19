@@ -73,6 +73,7 @@ const allowedOrigins = [
   "http://localhost:3000",
   "http://127.0.0.1:3000",
   "http://10.0.113.116:3000",
+  "https://health-connect-huqa.vercel.app",
 ];
 
 app.use(
