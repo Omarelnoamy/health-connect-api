@@ -9,7 +9,7 @@ const router = express.Router();
 const os = require("os");
 
 const app = express();
-const port = 3000;
+const port = process.env.PORT || 3000;
 
 /// 🛠 Ensure both upload folders exist
 const clinicalDocsDir = path.join(__dirname, "uploads", "clinicaldocs");
@@ -95,12 +95,12 @@ app.use(bodyParser.json());
 
 // ✅ PostgreSQL
 const pool = new Pool({
-  user: "postgres",
-  host: "localhost",
-  database: "medical_app",
-  password: "postgres",
-  port: 5432,
+  connectionString: process.env.DATABASE_URL,
+  ssl: {
+    rejectUnauthorized: false, // Required for Neon SSL
+  },
 });
+
 
 app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 
@@ -520,6 +520,4 @@ app.put("/patients/:id/visits", async (req, res) => {
 });
 
 // Start the server
-app.listen(port, "0.0.0.0", () =>
-  console.log(`API running at http://10.0.113.116:${port}`)
-);
+app.listen(port, () => console.log(`API running on port ${port}`));
